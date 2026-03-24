@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 
-import { SlidersHorizontal } from 'lucide-react';
-import { getCategoryLabel, type Language, filterByLabels, filterViewLabels } from "../i18n/i18n";
+import { Lock, SlidersHorizontal } from "lucide-react";
+import {
+  filterByLabels,
+  filterViewLabels,
+  getCategoryLabel,
+  myClassLockedLabel,
+  type Language,
+} from "../i18n/i18n";
 
 interface FilterHeaderProps {
   selectedView: 'my' | 'all';
@@ -10,6 +16,8 @@ interface FilterHeaderProps {
   onCategoryChange: (category: string) => void;
   categories: string[];
   language: Language;
+  isLoggedIn: boolean;
+  onRequireLogin: () => void;
 }
 
 export function FilterHeader({
@@ -18,7 +26,9 @@ export function FilterHeader({
   selectedCategory,
   onCategoryChange,
   categories,
-  language
+  language,
+  isLoggedIn,
+  onRequireLogin,
 }: FilterHeaderProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(true);
 
@@ -27,14 +37,23 @@ export function FilterHeader({
       {/* Toggle Buttons */}
       <div className="flex gap-2 px-4 pt-4 pb-3">
         <button
-          onClick={() => onViewChange('my')}
+          onClick={() => {
+            if (!isLoggedIn) {
+              onRequireLogin();
+              return;
+            }
+            onViewChange("my");
+          }}
           className={`flex-1 h-11 rounded-full transition-all ${
             selectedView === 'my'
-              ? 'bg-[#2a2420] text-white'
-              : 'bg-white text-[#6b6560] border border-[#e8e6e1]'
+              ? "bg-[#2a2420] text-white"
+              : "bg-white text-[#6b6560] border border-[#e8e6e1]"
           }`}
         >
-          {filterViewLabels[language].my}
+          <span className="inline-flex items-center gap-1.5">
+            {filterViewLabels[language].my}
+            {!isLoggedIn && <Lock className="w-3.5 h-3.5" />}
+          </span>
         </button>
         <button
           onClick={() => onViewChange('all')}
@@ -82,6 +101,9 @@ export function FilterHeader({
               </button>
             ))}
           </div>
+        )}
+        {!isLoggedIn && (
+          <p className="text-xs text-[#8b857f] mt-2">{myClassLockedLabel[language]}</p>
         )}
       </div>
     </div>

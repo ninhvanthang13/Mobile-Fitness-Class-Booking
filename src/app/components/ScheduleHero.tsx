@@ -1,15 +1,25 @@
-import { Menu } from "lucide-react";
-import React from "react";
-import { getHeroTitleLines, languageToggleLabels, type Language } from "../i18n/i18n";
+import { ChevronDown, Menu } from "lucide-react";
+import React, { useState } from "react";
+import {
+  authActionLabels,
+  getHeroTitleLines,
+  menuActionLabels,
+  type Language,
+} from "../i18n/i18n";
 
 export function ScheduleHero({
   language,
   onLanguageChange,
+  isLoggedIn,
+  onAuthAction,
 }: {
   language: Language;
   onLanguageChange: (lang: Language) => void;
+  isLoggedIn: boolean;
+  onAuthAction: () => void;
 }) {
   const [titleLine1, titleLine2] = getHeroTitleLines(language);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <div className="px-4 pt-4 pb-2">
@@ -24,31 +34,59 @@ export function ScheduleHero({
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 relative">
+          {!isLoggedIn && (
+            <button
+              type="button"
+              onClick={onAuthAction}
+              className="h-9 px-4 rounded-full border border-[#b7b0a8] text-[#2a2420] text-sm bg-white"
+            >
+              {authActionLabels[language].login}
+            </button>
+          )}
+
+          <div className="relative">
+            <select
+              value={language}
+              onChange={(e) => onLanguageChange(e.target.value as Language)}
+              className="h-9 pl-3 pr-8 rounded-full border border-[#e8e6e1] text-[#2a2420] text-sm bg-white appearance-none"
+            >
+              <option value="vi">vi.</option>
+              <option value="en">en.</option>
+            </select>
+            <ChevronDown className="w-4 h-4 text-[#6b6560] absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+          </div>
+
           <button
             type="button"
-            onClick={() => onLanguageChange("en")}
-            className={`w-[44px] h-9 rounded-full text-sm transition-all border ${
-              language === "en"
-                ? "bg-[#2a2420] text-white border-[#2a2420]"
-                : "bg-white text-[#6b6560] border-[#e8e6e1]"
-            }`}
+            onClick={() => setIsMenuOpen((v) => !v)}
+            className="w-9 h-9 rounded-full border border-[#e8e6e1] bg-white flex items-center justify-center"
           >
-            {languageToggleLabels.en}
-          </button>
-          <button
-            type="button"
-            onClick={() => onLanguageChange("vi")}
-            className={`w-[44px] h-9 rounded-full text-sm transition-all border ${
-              language === "vi"
-                ? "bg-[#2a2420] text-white border-[#2a2420]"
-                : "bg-white text-[#6b6560] border-[#e8e6e1]"
-            }`}
-          >
-            {languageToggleLabels.vi}
+            <Menu className="w-5 h-5 text-[#2a2420]" />
           </button>
 
-          <Menu className="w-6 h-6 text-[#2a2420]" />
+          {isMenuOpen && (
+            <div className="absolute right-0 top-11 w-44 rounded-2xl border border-[#e8e6e1] bg-white shadow-md p-2 z-50">
+              <a
+                href="mailto:support@moonstone.vn"
+                className="w-full block px-3 py-2 rounded-xl text-sm text-[#2a2420] hover:bg-[#f5f3f0]"
+              >
+                {menuActionLabels[language].contactUs}
+              </a>
+              {isLoggedIn && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    onAuthAction();
+                  }}
+                  className="w-full text-left px-3 py-2 rounded-xl text-sm text-[#2a2420] hover:bg-[#f5f3f0]"
+                >
+                  {authActionLabels[language].logout}
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

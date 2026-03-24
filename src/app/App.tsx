@@ -7,14 +7,15 @@ import { ClassCard } from './components/ClassCard';
 import { ScheduleHero } from './components/ScheduleHero';
 import { WeekSelector } from './components/WeekSelector';
 import { generateClasses, generateWeekDates, categories } from './data/classesData';
-import { getNoClassesForDayMessage, type Language } from "./i18n/i18n";
+import { getNoClassesForDayMessage, guestPromptTitle, type Language } from "./i18n/i18n";
 
 export default function App() {
-  const [selectedView, setSelectedView] = useState<'my' | 'all'>('my');
+  const [selectedView, setSelectedView] = useState<'my' | 'all'>('all');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [timeFilter, setTimeFilter] = useState<string | null>(null);
   const [language, setLanguage] = useState<Language>('vi');
   const [selectedDate, setSelectedDate] = useState<Date>(() => new Date('2026-03-20'));
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   
   const classes = useMemo(() => generateClasses(), []);
   const weekDates = useMemo(() => generateWeekDates(), []);
@@ -32,6 +33,16 @@ export default function App() {
 
   const handleBookClass = (classId: string) => {
     console.log('Booking class:', classId);
+  };
+
+  const handleAuthAction = () => {
+    setIsLoggedIn((prev) => {
+      const next = !prev;
+      if (!next) {
+        setSelectedView("all");
+      }
+      return next;
+    });
   };
 
   // Group classes by date
@@ -82,7 +93,12 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#faf9f7] max-w-[375px] mx-auto">
-      <ScheduleHero language={language} onLanguageChange={setLanguage} />
+      <ScheduleHero
+        language={language}
+        onLanguageChange={setLanguage}
+        isLoggedIn={isLoggedIn}
+        onAuthAction={handleAuthAction}
+      />
       <div className="sticky top-0 z-40 bg-[#faf9f7] border-b border-[#e8e6e1]">
         <FilterHeader
           selectedView={selectedView}
@@ -91,6 +107,11 @@ export default function App() {
           onCategoryChange={setSelectedCategory}
           categories={categories}
           language={language}
+          isLoggedIn={isLoggedIn}
+          onRequireLogin={() => {
+            setIsLoggedIn(true);
+            setSelectedView("my");
+          }}
         />
 
         <WeekSelector
@@ -103,6 +124,20 @@ export default function App() {
 
       <FilterTags tags={filterTags} onRemoveTag={handleRemoveTag} />
 
+      {!isLoggedIn && (
+        <div className="px-4 pt-4 pb-2">
+          <button
+            type="button"
+            onClick={() => setIsLoggedIn(true)}
+            className="w-full text-left rounded-2xl bg-[#ebe6df] text-[#2a2420] px-5 py-5"
+          >
+            <span className="text-[31px] leading-none align-middle mr-2">›</span>
+            <span className="text-[17px]">{guestPromptTitle[language]}</span>
+          </button>
+        </div>
+      )}
+
+      {isLoggedIn && (
       <div className="pb-20">
         {weekDates.map((dateItem, index) => {
           const dateKey = toDateKey(dateItem.fullDate);
@@ -154,6 +189,7 @@ export default function App() {
           );
         })}
       </div>
+      )}
     </div>
   );
 }

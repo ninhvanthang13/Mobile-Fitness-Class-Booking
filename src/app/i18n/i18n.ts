@@ -2,7 +2,7 @@ export type Language = "vi" | "en";
 
 const heroTitleLines: Record<Language, [string, string]> = {
   vi: ["LỊCH TẬP CÁC", "LỚP"],
-  en: ["SCHEDULE", "CLASSES"],
+  en: ["CLASS SCHEDULE", "CLASSES"],
 };
 
 export const languageToggleLabels: Record<Language, string> = {
@@ -24,12 +24,12 @@ export const filterByLabels: Record<Language, string> = {
 };
 
 const viCategoryLabels: Record<string, string> = {
-  All: "All",
-  Cardio: "Cardio",
-  "Mind & Body": "Mind & Body",
+  All: "Tất cả",
+  Cardio: "Tim mạch",
+  "Mind & Body": "Tâm & Thân",
   Reformer: "Reformer",
   Yoga: "Yoga",
-  Meditation: "Mats",
+  Meditation: "Thiền",
 };
 
 export function getCategoryLabel(language: Language, category: string) {
@@ -53,7 +53,7 @@ export function getDayShortLabel(language: Language, day: string) {
 }
 
 export function getBookingButtonLabel(language: Language, isBooked: boolean) {
-  if (language === "vi") return isBooked ? "Đã đăng ký" : "Chưa đăng ký";
+  if (language === "vi") return isBooked ? "Đã đăng ký" : "Đăng ký";
   return isBooked ? "Booked" : "Book";
 }
 
@@ -73,4 +73,24 @@ export function getNoClassesForDayMessage(
 export function getHeroTitleLines(language: Language) {
   return heroTitleLines[language];
 }
+
+export const authActionLabels: Record<Language, { login: string; logout: string }> = {
+  vi: { login: "Đăng nhập", logout: "Đăng xuất" },
+  en: { login: "Sign in", logout: "Sign out" },
+};
+
+export const menuActionLabels: Record<Language, { contactUs: string }> = {
+  vi: { contactUs: "Liên hệ" },
+  en: { contactUs: "Contact Us" },
+};
+
+export const guestPromptTitle: Record<Language, string> = {
+  vi: "Đăng nhập để xem và quản lý lịch tập cá nhân của bạn.",
+  en: "Sign in to view and manage your personal class schedule.",
+};
+
+export const myClassLockedLabel: Record<Language, string> = {
+  vi: "Đăng nhập để xem",
+  en: "Sign in to view",
+};
 
