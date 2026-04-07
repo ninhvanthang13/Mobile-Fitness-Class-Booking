@@ -1,4 +1,4 @@
-import { ChevronDown, Menu } from "lucide-react";
+import { ChevronDown, Menu, X, User, ChevronUp } from "lucide-react";
 import React, { useState } from "react";
 import {
   authActionLabels,
@@ -34,57 +34,94 @@ export function ScheduleHero({
           </div>
         </div>
 
-        <div className="flex items-center gap-2 relative">
-          {!isLoggedIn && (
-            <button
-              type="button"
-              onClick={onAuthAction}
-              className="h-9 px-4 rounded-full border border-[#b7b0a8] text-[#2a2420] text-sm bg-white"
-            >
-              {authActionLabels[language].login}
-            </button>
-          )}
-
-          <div className="relative">
-            <select
-              value={language}
-              onChange={(e) => onLanguageChange(e.target.value as Language)}
-              className="h-9 pl-3 pr-8 rounded-full border border-[#e8e6e1] text-[#2a2420] text-sm bg-white appearance-none"
-            >
-              <option value="vi">vi.</option>
-              <option value="en">en.</option>
-            </select>
-            <ChevronDown className="w-4 h-4 text-[#6b6560] absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
-
+        <div className="flex items-center gap-2 static">
           <button
             type="button"
-            onClick={() => setIsMenuOpen((v) => !v)}
-            className="w-9 h-9 rounded-full border border-[#e8e6e1] bg-white flex items-center justify-center"
+            onClick={() => setIsMenuOpen(true)}
+            className="w-9 h-9 rounded-full border border-[#e8e6e1] bg-white flex items-center justify-center p-0 cursor-pointer hover:bg-gray-50 transition-colors"
           >
             <Menu className="w-5 h-5 text-[#2a2420]" />
           </button>
 
           {isMenuOpen && (
-            <div className="absolute right-0 top-11 w-44 rounded-2xl border border-[#e8e6e1] bg-white shadow-md p-2 z-50">
-              <a
-                href="mailto:support@moonstone.vn"
-                className="w-full block px-3 py-2 rounded-xl text-sm text-[#2a2420] hover:bg-[#f5f3f0]"
-              >
-                {menuActionLabels[language].contactUs}
-              </a>
-              {isLoggedIn && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    onAuthAction();
-                  }}
-                  className="w-full text-left px-3 py-2 rounded-xl text-sm text-[#2a2420] hover:bg-[#f5f3f0]"
-                >
-                  {authActionLabels[language].logout}
-                </button>
-              )}
+            <div className="fixed inset-0 z-[100] flex justify-end">
+              <div
+                className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
+                onClick={() => setIsMenuOpen(false)}
+              />
+              <div className="w-[85%] max-w-[340px] bg-[#faf9f7] h-full relative flex flex-col animate-in slide-in-from-right duration-300 shadow-2xl overflow-hidden cursor-default">
+                {/* Header inside sidebar */}
+                <div className="flex items-center justify-between p-5 mt-2">
+                  <div className="flex items-center gap-3 opacity-20 relative -left-8">
+                    <div className="text-[#2a2420] font-sans text-4xl leading-none tracking-widest font-light">
+                      MOON<br />STONE
+                    </div>
+                  </div>
+                  <button onClick={() => setIsMenuOpen(false)} className="p-2 cursor-pointer rounded-full hover:bg-black/5">
+                    <X className="w-6 h-6 text-[#8b8580]" strokeWidth={1.5} />
+                  </button>
+                </div>
+
+                {/* Sidebar Main Content */}
+                <div className="flex flex-col flex-1 px-6 py-4 pb-10">
+                  {/* Mock Hero for Menu (as seen in image) */}
+                  <div className="relative rounded-[24px] overflow-hidden bg-gradient-to-br from-[#ebe6df] to-[#f4f2ef] h-[180px] flex items-center justify-center mb-10 shadow-sm border border-[#e8e6e1]">
+                    <div className="absolute top-5 text-[#2a2420] font-medium text-[16px]">Trang chủ</div>
+                    <div className="absolute top-5 right-5 text-[#8b8580] text-[10px] tracking-widest text-right font-medium">THE<br />GRAND 22</div>
+                    <div className="text-[#a8a19b] flex items-center gap-3">
+                      <div className="flex flex-col items-center">
+                        <div className="w-[10px] h-[10px] rounded-full border-[1.5px] border-current -mb-[1px]"></div>
+                        <div className="w-[16px] h-[16px] rounded-full border-[2px] border-current -mb-[2px]"></div>
+                        <div className="w-[24px] h-[24px] rounded-full border-[2px] border-current"></div>
+                      </div>
+                      <div className="text-[20px] font-light tracking-[0.15em] leading-[1.05]">MOON<br />STONE</div>
+                    </div>
+                  </div>
+
+                  <div className="mt-auto flex flex-col gap-6">
+
+                    {/* Language Select */}
+                    <div className="relative flex items-center justify-between group cursor-pointer w-full">
+                      <span className="text-[#2a2420] font-semibold text-[16px]">
+                        {language === 'vi' ? 'Tiếng Việt' : 'English (US)'}
+                      </span>
+                      <select
+                        value={language}
+                        onChange={(e) => onLanguageChange(e.target.value as Language)}
+                        className="absolute inset-0 w-full h-full opacity-0 outline-none cursor-pointer"
+                      >
+                        <option value="vi">Tiếng Việt</option>
+                        <option value="en">English (US)</option>
+                      </select>
+                      <ChevronUp className="w-5 h-5 text-[#2a2420]" strokeWidth={2.5} />
+                    </div>
+
+                    {/* Login/Account */}
+                    {isLoggedIn ? (
+                      <div className="flex justify-between items-center cursor-pointer w-full" onClick={() => { setIsMenuOpen(false); onAuthAction(); }}>
+                        <div className="flex items-center gap-3">
+                          <User className="w-[18px] h-[18px] text-[#2a2420]" strokeWidth={2.5} />
+                          <span className="text-[#2a2420] font-semibold text-[16px] truncate max-w-[190px]">FPT- Stefan Fadel Ada C...</span>
+                        </div>
+                        <ChevronUp className="w-5 h-5 text-[#2a2420]" strokeWidth={2.5} />
+                      </div>
+                    ) : (
+                      <div className="flex justify-between items-center cursor-pointer w-full" onClick={() => { setIsMenuOpen(false); onAuthAction(); }}>
+                        <div className="flex items-center gap-3">
+                          <User className="w-[18px] h-[18px] text-[#2a2420]" strokeWidth={2.5} />
+                          <span className="text-[#2a2420] font-semibold text-[16px]">{authActionLabels[language].login}</span>
+                        </div>
+                        <ChevronUp className="w-5 h-5 text-[#2a2420]" strokeWidth={2.5} />
+                      </div>
+                    )}
+
+                    {/* Contact Us */}
+                    <a href="mailto:support@moonstone.vn" className="bg-[#3f3833] text-white rounded-[24px] py-4 text-center font-semibold text-[15px] mt-2 shadow-[0_4px_12px_rgba(42,36,32,0.15)] hover:bg-[#2a2420] transition-colors cursor-pointer w-full block">
+                      Liên hệ với chúng tôi
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>
