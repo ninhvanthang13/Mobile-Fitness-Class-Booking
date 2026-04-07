@@ -1,14 +1,18 @@
 
-import React, { useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { ClassCard } from './components/ClassCard';
+import { DateHeader } from './components/DateHeader';
 import { FilterHeader } from './components/FilterHeader';
 import { FilterTags } from './components/FilterTags';
-import { DateHeader } from './components/DateHeader';
-import { ClassCard } from './components/ClassCard';
+import { Footer } from './components/Footer';
 import { ScheduleHero } from './components/ScheduleHero';
 import { WeekSelector } from './components/WeekSelector';
-import { Footer } from './components/Footer';
-import { generateClasses, generateWeekDates, categories } from './data/classesData';
-import { getNoClassesForDayMessage, guestPromptTitle, type Language } from "./i18n/i18n";
+import { categories, generateClasses, generateWeekDates } from './data/classesData';
+import {
+  getNoClassesForDayMessage,
+  //  guestPromptTitle,
+  type Language
+} from "./i18n/i18n";
 
 export default function App() {
   const [selectedView, setSelectedView] = useState<'my' | 'all'>('all');
@@ -123,7 +127,7 @@ export default function App() {
         />
       </div>
 
-      <FilterTags tags={filterTags} onRemoveTag={handleRemoveTag} />
+      {isLoggedIn && <FilterTags tags={filterTags} onRemoveTag={handleRemoveTag} />}
 
       {!isLoggedIn && (
         <div className="px-4 pt-4 pb-2">
@@ -133,7 +137,7 @@ export default function App() {
             className="w-full text-left rounded-2xl bg-[#ebe6df] text-[#2a2420] px-5 py-5"
           >
             <span className="text-[31px] leading-none align-middle mr-2">›</span>
-            <span className="text-[17px]">{guestPromptTitle[language]}</span>
+            {/* <span className="text-[17px]">{guestPromptTitle[language]}</span> */}
           </button>
         </div>
       )}

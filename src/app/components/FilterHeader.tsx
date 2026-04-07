@@ -5,7 +5,7 @@ import {
   filterByLabels,
   filterViewLabels,
   getCategoryLabel,
-  myClassLockedLabel,
+  // myClassLockedLabel,
   type Language,
 } from "../i18n/i18n";
 
@@ -103,7 +103,10 @@ export function FilterHeader({
           </div>
         )}
         {!isLoggedIn && (
-          <p className="text-xs text-[#8b857f] mt-2">{myClassLockedLabel[language]}</p>
+          <></>
+          // <p className="text-xs text-[#8b857f] mt-2">
+          //   {/* {myClassLockedLabel[language]} */}
+          // </p>
         )}
       </div>
     </div>

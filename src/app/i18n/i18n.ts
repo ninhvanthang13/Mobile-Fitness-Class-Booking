@@ -84,13 +84,13 @@ export const menuActionLabels: Record<Language, { contactUs: string }> = {
   en: { contactUs: "Contact Us" },
 };
 
-export const guestPromptTitle: Record<Language, string> = {
-  vi: "Đăng nhập để xem và quản lý lịch tập cá nhân của bạn.",
-  en: "Sign in to view and manage your personal class schedule.",
-};
+// export const guestPromptTitle: Record<Language, string> = {
+//   vi: "",
+//   en: "",
+// };
 
-export const myClassLockedLabel: Record<Language, string> = {
-  vi: "Đăng nhập để xem",
-  en: "Sign in to view",
-};
+// export const myClassLockedLabel: Record<Language, string> = {
+//   // vi: "Đăng nhập để xem",
+//   // en: "Sign in to view",
+// };
 

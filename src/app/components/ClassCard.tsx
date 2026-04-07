@@ -1,4 +1,3 @@
-import React from "react";
 import { getBookingButtonLabel, type Language } from "../i18n/i18n";
 
 interface ClassCardProps {

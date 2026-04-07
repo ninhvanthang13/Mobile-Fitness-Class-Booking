@@ -1,4 +1,3 @@
-import React from "react";
 import { getDayShortLabel, type Language } from "../i18n/i18n";
 
 interface DateItem {
@@ -36,8 +35,10 @@ export function WeekSelector({
         {dates.map((dateItem, index) => {
           const isSelected = isSameDay(dateItem.fullDate, selectedDate);
           const dayLabel = getDayShortLabel(language, dateItem.day);
-          const displayDate =
-            dateItem.date || new Date(dateItem.fullDate).getDate().toString();
+          const displayDate = new Intl.DateTimeFormat("vi-VN", {
+            day: "2-digit",
+            month: "2-digit",
+          }).format(dateItem.fullDate);
           return (
             <button
               key={index}
@@ -48,7 +49,7 @@ export function WeekSelector({
                   : "bg-white text-[#6b6560] border border-[#e8e6e1]"
               }`}>
               <span className="text-xs opacity-70">{dayLabel}</span>
-              <span className="mt-1">{dateItem.date}</span>
+              <span className="mt-1 text-sm font-semibold">{displayDate}</span>
             </button>
           );
         })}

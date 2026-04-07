@@ -79,8 +79,8 @@ export function Footer({ language, onLanguageChange }: FooterProps) {
         <p>Copyright © CÔNG TY TNHH MỘT THÀNH VIÊN</p>
         <p>MASTERISE RETAIL HÀ NỘI</p>
       </div>
-
-      {/* Languages */}
+{/* 
+      Languages
       <div className="flex justify-center items-center gap-3 text-[13px] text-gray-400 mb-2">
         <button
           onClick={() => onLanguageChange('en')}
@@ -95,7 +95,7 @@ export function Footer({ language, onLanguageChange }: FooterProps) {
         >
           Tiếng Việt
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
