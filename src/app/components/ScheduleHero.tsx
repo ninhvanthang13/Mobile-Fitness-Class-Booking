@@ -183,6 +183,10 @@ export function ScheduleHero({
                 href="tel:+84913209595"
                 className="bg-black text-white rounded-xl py-3 text-center font-semibold"
                 aria-label="Gọi đến số 0913209595"
+                onClick={(event) => {
+                  event.currentTarget.href = "tel:+84913209595";
+                  window.location.href = "tel:+84913209595";
+                }}
               >
                 Liên hệ với chúng tôi
               </a>
