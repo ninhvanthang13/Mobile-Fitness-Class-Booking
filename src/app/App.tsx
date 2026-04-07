@@ -6,6 +6,7 @@ import { DateHeader } from './components/DateHeader';
 import { ClassCard } from './components/ClassCard';
 import { ScheduleHero } from './components/ScheduleHero';
 import { WeekSelector } from './components/WeekSelector';
+import { Footer } from './components/Footer';
 import { generateClasses, generateWeekDates, categories } from './data/classesData';
 import { getNoClassesForDayMessage, guestPromptTitle, type Language } from "./i18n/i18n";
 
@@ -190,6 +191,7 @@ export default function App() {
         })}
       </div>
       )}
+      <Footer language={language} onLanguageChange={setLanguage} />
     </div>
   );
 }
